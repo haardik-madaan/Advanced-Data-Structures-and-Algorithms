@@ -1,0 +1,14 @@
+class Solution {
+public:
+    int maximumProduct(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        int n = nums.size();
+        int maxi = nums[n-1]*nums[n-2]*nums[n-3];
+        if(n==3) return maxi;
+
+        if(nums[0] < 0 && nums[1] < 0){
+            maxi = max(maxi,nums[0]*nums[1]*nums[n-1]);
+        }
+        return maxi;
+    }
+};
