@@ -1,23 +1,40 @@
 class Solution {
 public:
-    int solve(int idx, int n, vector<int> &prices, int fee,bool has,vector<vector<int>> &dp){
+    // int solve(int idx, int n, vector<int> &prices, int fee,bool has,vector<vector<int>> &dp){
         
-        if(idx >= n) return 0;
-        if(dp[idx][has] != -1) return dp[idx][has];
-        int sell = INT_MIN;
-        int buy = INT_MIN;
-        if(has){
-            sell = max((prices[idx] - fee) + solve(idx+1,n,prices,fee,false,dp),solve(idx+1,n,prices,fee,true,dp));
-        }
-        else{
-            buy = max(-prices[idx] + solve(idx+1,n,prices,fee,true,dp), solve(idx+1,n,prices,fee,false,dp));
-        }
-        return dp[idx][has] = max(buy,sell);
-    }
+    //     if(idx >= n) return 0;
+    //     if(dp[idx][has] != -1) return dp[idx][has];
+    //     int sell = INT_MIN;
+    //     int buy = INT_MIN;
+    //     if(has){
+    //         sell = max((prices[idx] - fee) + solve(idx+1,n,prices,fee,false,dp),solve(idx+1,n,prices,fee,true,dp));
+    //     }
+    //     else{
+    //         buy = max(-prices[idx] + solve(idx+1,n,prices,fee,true,dp), solve(idx+1,n,prices,fee,false,dp));
+    //     }
+    //     return dp[idx][has] = max(buy,sell);
+    // }
     int maxProfit(vector<int>& prices, int fee) {
         int n = prices.size();
 
-        vector<vector<int>> dp(n, vector<int> (2,-1));
-        return solve(0,n,prices,fee,0,dp);
+        vector<vector<int>> dp(n+1, vector<int> (2,0));
+        // return solve(0,n,prices,fee,0,dp);
+        return solve2(n,prices,fee,dp);
+    }
+
+    int solve2(int n, vector<int> &prices, int fee, vector<vector<int>> &dp){
+
+        for (int i = n-1;i>=0;i--){
+            for (int j = 0;j<=1;j++){
+
+                if(j == 1){
+                    dp[i][j] = max(prices[i] - fee + dp[i+1][0],dp[i+1][1]);
+                }
+                else{
+                    dp[i][j] = max(-prices[i] + dp[i+1][1] , dp[i+1][0]);
+                }
+            }
+        }
+        return dp[0][0];
     }
 };
