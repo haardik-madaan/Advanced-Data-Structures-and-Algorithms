@@ -15,19 +15,21 @@ public:
         int n1 = text1.size();
         int n2 = text2.size();
 
-        vector<vector<int>> dp(n1+1, vector<int> (n2+1,0));
+        // vector<vector<int>> dp(n1+1, vector<int> (n2+1,0));
         // return solve(0,0,n1,n2,text1,text2,dp);
-        return solve2(dp,text1,text2,n1,n2);
+        return solve2(text1,text2,n1,n2);
     }
 
-    int solve2(vector<vector<int>> &dp, string &text1, string& text2, int n1, int n2){
+    int solve2(string &text1, string& text2, int n1, int n2){
         
         vector<int> prev(n2+1,0);
+        string ans = "";
         
         for (int i = n1-1;i>=0;i--){
             vector<int> curr(n2+1,0);
             for (int j = n2-1;j>=0;j--){
                 if(text1[i] == text2[j]){
+                    ans+=text1[i];
                     curr[j] = 1 + prev[j+1];
                 }
                 else{
@@ -36,6 +38,8 @@ public:
             }
             prev = curr;
         }
+        reverse(ans.begin(),ans.end());
+        cout<<ans;
         return prev[0];
     }
 };
